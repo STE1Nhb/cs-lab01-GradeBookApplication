@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GradeBook.GradeBooks
 {
@@ -110,20 +111,40 @@ namespace GradeBook.GradeBooks
 
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
-            switch (letterGrade)
+            if (studentType != StudentType.Standard && IsWeighted)
             {
-                case 'A':
-                    return 4;
-                case 'B':
-                    return 3;
-                case 'C':
-                    return 2;
-                case 'D':
-                    return 1;
-                case 'F':
-                    return 0;
+                switch (letterGrade) 
+                {
+                    case 'A':
+                        return 5;
+                    case 'B':
+                        return 4;
+                    case 'C':
+                        return 3;
+                    case 'D':
+                        return 2;
+                    case 'F':
+                        return 1;
+                    default:
+                        return 1;
+                }
             }
-            return 0;
+            else
+                switch (letterGrade)
+                {
+                    case 'A':
+                        return 4;
+                    case 'B':
+                        return 3;
+                    case 'C':
+                        return 2;
+                    case 'D':
+                        return 1;
+                    case 'F':
+                        return 0;
+                    default:
+                        return 0;
+                }
         }
 
         public virtual void CalculateStatistics()
